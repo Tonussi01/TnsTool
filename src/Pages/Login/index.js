@@ -52,8 +52,7 @@ const Login = () => {
         {error && <p>{error}</p>}
         <Button type="submit">Entrar</Button>
       </Form>
-    </Container>
-    
+    </Container>    
   );
 };
 
