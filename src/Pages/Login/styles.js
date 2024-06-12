@@ -1,5 +1,3 @@
-// Arquivo styles.js
-
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -38,6 +36,7 @@ export const Input = styled.input`
   border: 1px solid #ccc;
   border-radius: 4px;
 `;
+
 export const Button = styled.button`
   padding: 0.75rem 1.5rem;
   margin-top: 1rem;

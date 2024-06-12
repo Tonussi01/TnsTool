@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter, useLocation } from 'react-router-dom';
-import Routes from './Routes';
-import Header from './Components/Header/index'; 
-import Footer from './Components/Footer/index';
-import GlobalStyles from './GlobalStyles';
+import Routes from './Routes.js';
+import Header from './Components/Header/index.js'; 
+import Footer from './Components/Footer/index.js';
+import GlobalStyles from './GlobalStyles.js';
 
 function AppContent() {
   const location = useLocation();
