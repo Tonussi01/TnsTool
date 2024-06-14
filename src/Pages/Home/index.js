@@ -3,46 +3,36 @@ import { useHistory } from 'react-router-dom';
 import { Container, Title, OptionGrid, OptionContainer, OptionContent, OptionIcon, OptionTitle } from './styles';
 import { FaBox, FaShoppingCart, FaCogs, FaBusinessTime, FaChartBar } from 'react-icons/fa';
 
+const options = [
+  { path: '/produtos', color: '#ff7f7f', icon: <FaBox />, title: 'Produtos' },
+  { path: '/vendas', color: '#7fbf7f', icon: <FaShoppingCart />, title: 'Vendas' },
+  { path: '/configuracoes', color: '#7f7fff', icon: <FaCogs />, title: 'Configurações' },
+  { path: '/gestaoempresarial', color: '#ffbf7f', icon: <FaBusinessTime />, title: 'Gestão Empresarial' }, // Corrigido o path
+  { path: '/relatorios', color: '#bf7fff', icon: <FaChartBar />, title: 'Relatórios' }
+];
+
 const Home = () => {
   const history = useHistory();
 
   const handleOptionClick = (path) => {
     history.push(path);
+    window.location.reload(); 
   };
 
   return (
     <Container>
+      <br/><br/>
+      <Title>Módulos do Sistema</Title>
+      <br/>
       <OptionGrid>
-        <OptionContainer color="#ff7f7f" onClick={() => handleOptionClick('/produtos')}>
-          <OptionContent>
-            <OptionIcon><FaBox /></OptionIcon>
-            <OptionTitle>Produtos</OptionTitle>
-          </OptionContent>
-        </OptionContainer>
-        <OptionContainer color="#7fbf7f" onClick={() => handleOptionClick('/vendas')}>
-          <OptionContent>
-            <OptionIcon><FaShoppingCart /></OptionIcon>
-            <OptionTitle>Vendas</OptionTitle>
-          </OptionContent>
-        </OptionContainer>
-        <OptionContainer color="#7f7fff" onClick={() => handleOptionClick('/configuracoes')}>
-          <OptionContent>
-            <OptionIcon><FaCogs /></OptionIcon>
-            <OptionTitle>Configurações</OptionTitle>
-          </OptionContent>
-        </OptionContainer>
-        <OptionContainer color="#ffbf7f" onClick={() => handleOptionClick('/gestao-empresarial')}>
-          <OptionContent>
-            <OptionIcon><FaBusinessTime /></OptionIcon>
-            <OptionTitle>Gestão Empresarial</OptionTitle>
-          </OptionContent>
-        </OptionContainer>
-        <OptionContainer color="#bf7fff" onClick={() => handleOptionClick('/relatorios')}>
-          <OptionContent>
-            <OptionIcon><FaChartBar /></OptionIcon>
-            <OptionTitle>Relatórios</OptionTitle>
-          </OptionContent>
-        </OptionContainer>
+        {options.map((option) => (
+          <OptionContainer key={option.path} color={option.color} onClick={() => handleOptionClick(option.path)}>
+            <OptionContent>
+              <OptionIcon>{option.icon}</OptionIcon>
+              <OptionTitle>{option.title}</OptionTitle>
+            </OptionContent>
+          </OptionContainer>
+        ))}
       </OptionGrid>
     </Container>
   );

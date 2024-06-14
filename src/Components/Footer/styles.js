@@ -1,44 +1,10 @@
 import styled from 'styled-components';
 
 export const Footer = styled.div`
-    width: max; /* Ocupa 100% da largura da tela */
+    width: 100vw; /* 100% da largura da viewport */
+  max-width: 100%; /* Limita a largura ao tamanho máximo do contêiner pai */
+  overflow-x: hidden; /* Remove qualquer rolagem horizontal */
     background: #000;
-    padding: 3px; 
-
-    h1 {
-        font-size: 15px;
-        color: #fff;
-        text-align: center;
-    }
-
-    ul {
-        list-style-type: none;
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Alinha os itens centralmente */
-        padding: 0;
-    }
-
-    li {
-        font-size: 15px;
-        padding: 5px;
-        display: flex;
-        align-items: center; /* Alinha os itens verticalmente */
-    }
-
-    img {
-        width: 20px; /* Ajuste o tamanho da imagem conforme necessário */
-        margin-right: 10px; /* Adiciona um espaço entre a imagem e o texto */
-    }
-
-    a {
-        color: #fff;
-        text-decoration: none;
-    }
-
-    p {
-        font-size: 10px;
-        color: #800000;
-        text-align: center;
-    }
+    position: fixed;
+    bottom: 0;
 `;

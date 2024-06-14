@@ -4,13 +4,12 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 80vh;
+  min-height: 100vh;
   background-color: #f0f0f0;
 `;
 
 export const Title = styled.h1`
-  margin-bottom: 2rem;
+  margin: 0;
 `;
 
 export const OptionGrid = styled.div`
@@ -20,6 +19,7 @@ export const OptionGrid = styled.div`
   gap: 1rem;
   width: 100%;
   max-width: 1200px;
+  padding: 2rem 0;
 `;
 
 export const OptionContainer = styled.div`
@@ -34,9 +34,19 @@ export const OptionContainer = styled.div`
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
-  
+
   &:hover {
     transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    width: 150px;
+    height: 150px;
+  }
+
+  @media (max-width: 480px) {
+    width: 120px;
+    height: 120px;
   }
 `;
 

@@ -1,15 +1,20 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import logoLt from '../../Images/Logo.png';
 import { Header } from './styles';
 
 function HeaderSite() {
+    const history = useHistory();
+
+    const handleLogoClick = () => {
+        history.push('/home');
+        window.location.reload(); // Força o recarregamento da página
+    };
+
     return (
         <Header>
-            <ul>                
-                <img src={logoLt} alt="Logo" />                
-                <li><a href='/home'>Home</a></li>
-                <li><a href='/produtos'>Produtos</a></li>
-                <li><a href='/vendas'>Vendas</a></li>      
+            <ul>
+                <img src={logoLt} alt="Logo" onClick={handleLogoClick} style={{ cursor: 'pointer' }} />
             </ul>
         </Header>
     );
