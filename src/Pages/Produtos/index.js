@@ -1,61 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import ProdutoController from '../../Controllers/ProdutosController';
 import { useHistory } from 'react-router-dom';
-import {
-  Container,
-  Title,
-  Button,
-  ProductTable,
-  ProductTableHeader,
-  ProductTableRow,
-  ProductTableCell,
-  ActionButton,
-  SaveButton,
-  CancelButton,
-  EditableInput
-} from './styles'; // Importe os estilos e componentes necessários
-
-// Importe ícones do react-icons
+import { Container, Title, Button, ProductTable, ProductTableHeader, ProductTableRow,
+  ProductTableCell, ActionButton, SaveButton, CancelButton, EditableInput } from './styles';
 import { RiEdit2Line, RiDeleteBinLine, RiAddLine } from 'react-icons/ri';
 
 const Produtos = () => {
   const [produtos, setProdutos] = useState([]);
-  const [editingId, setEditingId] = useState(null); // Estado para controlar o ID do produto em edição
-  const [editValues, setEditValues] = useState({}); // Estado para armazenar os valores editáveis dos campos
+  const [editingId, setEditingId] = useState(null);
+  const [editValues, setEditValues] = useState({});
   const history = useHistory();
 
   useEffect(() => {
-    fetchProdutos();
+    ProdutoController.fetchProdutos(setProdutos);
   }, []);
 
-  const fetchProdutos = async () => {
-    try {
-      const response = await axios.get('http://localhost:3001/api/produtos');
-      if (response.status === 200) {
-        setProdutos(response.data);
-      } else {
-        throw new Error('Erro ao obter produtos');
-      }
-    } catch (error) {
-      console.error('Erro ao buscar produtos:', error);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      const response = await axios.delete(`http://localhost:3001/api/produtos/${id}`);
-      if (response.status === 200) {
-        fetchProdutos(); // Atualiza a lista após exclusão
-      } else {
-        throw new Error('Erro ao excluir produto');
-      }
-    } catch (error) {
-      console.error('Erro ao excluir produto:', error);
-    }
+  const handleDelete = (id) => {
+    ProdutoController.deleteProduto(id, () => ProdutoController.fetchProdutos(setProdutos));
   };
 
   const handleEdit = (produto) => {
-    setEditingId(produto.id); // Define o ID do produto em edição
+    setEditingId(produto.id);
     setEditValues({
       nome: produto.nome,
       quantidade: produto.quantidade,
@@ -67,36 +32,28 @@ const Produtos = () => {
     });
   };
 
-  const handleSave = async (id) => {
-    // Implemente a lógica para salvar as alterações no produto com o ID específico
-    try {
-      // Exemplo básico de requisição PUT para atualizar o produto
-      const response = await axios.put(`http://localhost:3001/api/produtos/${id}`, editValues);
-      if (response.status === 200) {
-        fetchProdutos(); // Atualiza a lista após salvar as alterações
-        setEditingId(null); // Sai do modo de edição
-      } else {
-        throw new Error('Erro ao salvar produto');
-      }
-    } catch (error) {
-      console.error('Erro ao salvar produto:', error);
-    }
+  const handleSave = (id) => {
+    ProdutoController.saveProduto(id, editValues, () => ProdutoController.fetchProdutos(setProdutos), setEditingId);
   };
 
   const handleCancel = () => {
-    setEditingId(null); // Sai do modo de edição sem salvar alterações
+    setEditingId(null);
   };
 
   const handleNavigateToCadastro = () => {
     history.push('/CadastroProdutos');
-    window.location.reload();   
+    window.location.reload();
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
+
+    // Handling checkbox inputs
+    const newValue = type === 'checkbox' ? checked : value;
+
     setEditValues({
       ...editValues,
-      [name]: value
+      [name]: newValue
     });
   };
 
@@ -177,19 +134,8 @@ const Produtos = () => {
               ) : (
                 produto.disponivel ? 'Sim' : 'Não'
               )}
-            </ProductTableCell>
-            <ProductTableCell>
-              {editingId === produto.id ? (
-                <EditableInput
-                  type="text"
-                  name="codigo_sku"
-                  value={editValues.codigo_sku}
-                  onChange={handleInputChange}
-                />
-              ) : (
-                produto.codigo_sku
-              )}
-            </ProductTableCell>
+            </ProductTableCell>            
+            <ProductTableCell>{produto.codigo_sku}</ProductTableCell>
             <ProductTableCell>
               {editingId === produto.id ? (
                 <>

@@ -13,6 +13,8 @@ import CadastroProdutos from './Pages/CadastroProdutos/index.js';
 import Menu from './Components/MenuLateral/index.js';
 import CadastroVendas from './Pages/CadastroVendas/index.js';
 import EdicaoVendas from './Pages/EdicaoVendas/index.js';
+import DetalheVenda from './Pages/DetalheVenda/index.js';
+
 
 function App() {
   return (
@@ -30,7 +32,8 @@ function App() {
         <Route exact path="/configuracoes" component={Configuracoes} />
         <Route exact path="/cadastroprodutos" component={CadastroProdutos} />        
         <Route exact path="/cadastrovendas" component={CadastroVendas} />        
-        <Route exact path="/edicaovendas" component={EdicaoVendas} />
+        <Route path="/edicaovendas/:id" component={EdicaoVendas} />
+        <Route path="/detalhevenda/:id" component={DetalheVenda} />
       </Switch>      
     </Router>
   );

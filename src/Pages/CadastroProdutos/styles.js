@@ -18,7 +18,7 @@ export const FormContainer = styled.div`
 `;
 
 export const FormGroup = styled.div`
-  margin-bottom: 10px;
+  margin: 10px;
 `;
 
 export const Label = styled.label`
