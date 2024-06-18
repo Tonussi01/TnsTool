@@ -16,7 +16,7 @@ const EdicaoVendas = () => {
   const [loading, setLoading] = useState(true);
   const history = useHistory();
   const { id } = useParams();
-  
+
   useEffect(() => {
     if (id) {
       fetchVendaById(id);
@@ -25,7 +25,7 @@ const EdicaoVendas = () => {
 
   const fetchVendaById = async (id) => {
     try {
-      const data = await VendasController.fetchVendaPorId(id); // Utiliza a função correta do controller para buscar por ID
+      const data = await VendasController.fetchVendaPorId(id);
       setVenda(data);
       setLoading(false);
     } catch (error) {
@@ -35,9 +35,9 @@ const EdicaoVendas = () => {
 
   const handleSave = async () => {
     try {
-      await VendasController.updateVenda(id, venda); // Passa o ID e os dados da venda para atualização
+      await VendasController.updateVenda(id, venda);
       history.push('/vendas');
-      window.location.reload(); 
+      window.location.reload();
     } catch (error) {
       console.error('Erro ao salvar venda:', error);
     }
@@ -45,7 +45,7 @@ const EdicaoVendas = () => {
 
   const handleCancel = () => {
     history.push('/vendas');
-    window.location.reload(); 
+    window.location.reload();
   };
 
   const handleChange = (e) => {
@@ -72,28 +72,28 @@ const EdicaoVendas = () => {
       />
       <label>Valor Compra:</label>
       <EditableInput
-        type="text"
+        type="number"
         name="valor_compra"
         value={venda.valor_compra}
         onChange={handleChange}
       />
       <label>Valor Custo Produtos:</label>
       <EditableInput
-        type="text"
+        type="number"
         name="valor_custo_produtos"
         value={venda.valor_custo_produtos}
         onChange={handleChange}
       />
       <label>Situação:</label>
       <EditableInput
-        type="text"
+        type="number"
         name="situacao"
         value={venda.situacao}
         onChange={handleChange}
       />
       <label>Forma Pagamento:</label>
       <EditableInput
-        type="text"
+        type="number"
         name="forma_pagamento"
         value={venda.forma_pagamento}
         onChange={handleChange}
@@ -107,7 +107,7 @@ const EdicaoVendas = () => {
       />
       <label>Data Venda:</label>
       <EditableInput
-        type="text"
+        type="date"
         name="data_venda"
         value={venda.data_venda}
         onChange={handleChange}

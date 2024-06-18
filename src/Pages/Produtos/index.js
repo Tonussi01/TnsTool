@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ProdutoController from '../../Controllers/ProdutosController';
+import ProdutoController from '../../Controllers/ProdutosController'; // Corrigido o caminho para o controller
 import { useHistory } from 'react-router-dom';
 import { Container, Title, Button, ProductTable, ProductTableHeader, ProductTableRow,
   ProductTableCell, ActionButton, SaveButton, CancelButton, EditableInput } from './styles';
@@ -12,11 +12,27 @@ const Produtos = () => {
   const history = useHistory();
 
   useEffect(() => {
-    ProdutoController.fetchProdutos(setProdutos);
+    fetchProdutos();
   }, []);
 
-  const handleDelete = (id) => {
-    ProdutoController.deleteProduto(id, () => ProdutoController.fetchProdutos(setProdutos));
+  const fetchProdutos = async () => {
+    try {
+      const data = await ProdutoController.listarProdutos(); // Chamada corrigida para listarProdutos
+      setProdutos(data);
+    } catch (error) {
+      console.error('Erro ao buscar produtos:', error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Tem certeza que deseja excluir este produto?')) {
+      try {
+        await ProdutoController.deletarProduto(id); // Chamada corrigida para deletarProduto
+        fetchProdutos();
+      } catch (error) {
+        console.error('Erro ao excluir produto:', error);
+      }
+    }
   };
 
   const handleEdit = (produto) => {
@@ -32,8 +48,14 @@ const Produtos = () => {
     });
   };
 
-  const handleSave = (id) => {
-    ProdutoController.saveProduto(id, editValues, () => ProdutoController.fetchProdutos(setProdutos), setEditingId);
+  const handleSave = async (id) => {
+    try {
+      await ProdutoController.atualizarProduto(id, editValues); // Chamada corrigida para atualizarProduto
+      fetchProdutos();
+      setEditingId(null);
+    } catch (error) {
+      console.error('Erro ao salvar produto:', error);
+    }
   };
 
   const handleCancel = () => {

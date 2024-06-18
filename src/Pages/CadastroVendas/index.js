@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import VendasController from '../../Controllers/VendasController';
 import {
   Container,
   Title,
@@ -20,7 +20,7 @@ const CadastroVendas = () => {
   const [valorCustoProdutos, setValorCustoProdutos] = useState('');
   const [situacao, setSituacao] = useState('');
   const [formaPagamento, setFormaPagamento] = useState('');
-  const [localCompra, setLocalCompra] = useState(''); // Corrigido o nome da variável para `localCompra`
+  const [localCompra, setLocalCompra] = useState('');
   const [dataVenda, setDataVenda] = useState('');
 
   const history = useHistory();
@@ -32,18 +32,14 @@ const CadastroVendas = () => {
       valor_custo_produtos: parseFloat(valorCustoProdutos),
       situacao: parseInt(situacao),
       forma_pagamento: parseInt(formaPagamento),
-      local_compra: localCompra, // Corrigido o nome da chave para `local_compra`
-      data_venda: new Date(dataVenda).toISOString() // Converte a data para o formato ISO
+      local_compra: localCompra,
+      data_venda: new Date(dataVenda).toISOString()
     };
 
     try {
-      const response = await axios.post('http://localhost:3001/api/vendas', novaVenda);
-      if (response.status === 201) {
-        history.push('/vendas');
-        window.location.reload();   
-      } else {
-        throw new Error('Erro ao cadastrar venda');
-      }
+      await VendasController.createVenda(novaVenda);
+      history.push('/vendas');
+      window.location.reload();   
     } catch (error) {
       console.error('Erro ao cadastrar venda:', error);
     }

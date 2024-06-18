@@ -1,35 +1,47 @@
 // src/controllers/ProdutoController.js
 
-import ProdutoModel from '../Models/ProdutosModel';
+import ProdutoModel from './../Models/ProdutosModel';
 
-class ProdutoController {
-  static async fetchProdutos(setProdutos) {
+const ProdutoController = {
+  async listarProdutos() {
     try {
-      const produtos = await ProdutoModel.getAll();
-      setProdutos(produtos);
+      return await ProdutoModel.getAll();
     } catch (error) {
-      console.error('Erro ao buscar produtos:', error);
+      throw error;
+    }
+  },
+
+  async buscarProdutoPorId(id) {
+    try {
+      return await ProdutoModel.getById(id);
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async adicionarProduto(produto) {
+    try {
+      return await ProdutoModel.create(produto);
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async atualizarProduto(id, produto) {
+    try {
+      return await ProdutoModel.update(id, produto);
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async deletarProduto(id) {
+    try {
+      return await ProdutoModel.delete(id);
+    } catch (error) {
+      throw error;
     }
   }
-
-  static async deleteProduto(id, fetchProdutos) {
-    try {
-      await ProdutoModel.delete(id);
-      fetchProdutos();
-    } catch (error) {
-      console.error('Erro ao excluir produto:', error);
-    }
-  }
-
-  static async saveProduto(id, editValues, fetchProdutos, setEditingId) {
-    try {
-      await ProdutoModel.update(id, editValues);
-      fetchProdutos();
-      setEditingId(null);
-    } catch (error) {
-      console.error('Erro ao salvar produto:', error);
-    }
-  }
-}
+};
 
 export default ProdutoController;

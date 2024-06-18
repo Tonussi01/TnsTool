@@ -1,3 +1,5 @@
+// src/pages/CadastroProdutos/index.js
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
@@ -27,7 +29,7 @@ const CadastroProdutos = () => {
 
   const handleAdicionarProduto = async () => {
     try {
-      const response = await axios.post('http://localhost:3001/api/produtos', {
+      await axios.post('http://localhost:3001/api/produtos', {
         nome,
         quantidade,
         valor_compra: valorCompra,
@@ -36,19 +38,8 @@ const CadastroProdutos = () => {
         codigo_sku: codigoSku,
         fornecedor
       });
-      if (response.status === 200) {
-        setSuccessMessage('Produto adicionado com sucesso!');
-        // Limpar campos após adicionar com sucesso (opcional)
-        setNome('');
-        setQuantidade('');
-        setValorCompra('');
-        setValorVenda('');
-        setDisponivel('');
-        setCodigoSku('');
-        setFornecedor('');
-      } else {
-        throw new Error('Erro ao adicionar produto');
-      }
+      setSuccessMessage('Produto adicionado com sucesso!');
+      handleLimparCampos();
     } catch (error) {
       console.error('Erro ao adicionar produto:', error);
       setErrorMessage('Erro ao adicionar produto. Verifique os campos e tente novamente.');

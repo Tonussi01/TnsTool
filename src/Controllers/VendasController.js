@@ -1,46 +1,50 @@
-import axios from 'axios';
+// src/controllers/VendasController.js
 
-const API_URL = 'http://localhost:3001/api/vendas';
+import VendasModel from './../Models/VendasModel';
 
-const VendasController = {
-  async fetchVendas() {
+class VendasController {
+  static async fetchVendas() {
     try {
-      const response = await axios.get(API_URL);
-      return response.data;
+      return await VendasModel.getAll();
     } catch (error) {
       console.error('Erro ao buscar vendas:', error);
       throw error;
     }
-  },
-  async fetchVendaPorId(id) {
+  }
+
+  static async fetchVendaPorId(id) {
     try {
-      const response = await axios.get(`${API_URL}/${id}`);
-      return response.data;
+      return await VendasModel.getById(id);
     } catch (error) {
-      console.error(`Erro ao buscar venda com ID ${id}:`, error);
+      console.error(`Erro ao buscar venda ${id}:`, error);
       throw error;
     }
-  },
+  }
 
-  async deleteVenda(id) {
+  static async deleteVenda(id, fetchVendas) {
     try {
-      const response = await axios.delete(`${API_URL}/${id}`);
-      return response.data;
+      await VendasModel.delete(id);
+      fetchVendas();
     } catch (error) {
       console.error('Erro ao excluir venda:', error);
       throw error;
     }
-  },
+  }
 
-  async updateVenda(id, vendaData) {
+  static async saveVenda(id, editValues, fetchVendas, setEditingId) {
     try {
-      const response = await axios.put(`${API_URL}/${id}`, vendaData);
-      return response.data;
+      if (id) {
+        await VendasModel.update(id, editValues);
+      } else {
+        await VendasModel.create(editValues);
+      }
+      fetchVendas();
+      setEditingId(null);
     } catch (error) {
-      console.error('Erro ao atualizar venda:', error);
+      console.error('Erro ao salvar venda:', error);
       throw error;
     }
   }
-};
+}
 
 export default VendasController;

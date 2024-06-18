@@ -1,44 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import VendasController from './../../Controllers/VendasController';
-import { Container, Title, BackButton, DetailLabel, DetailValue } from './styles'; // Importe os estilos e componentes necessários
+import VendasController from '../../Controllers/VendasController';
+import { Container, Title, BackButton, DetailLabel, DetailValue } from './styles';
 
 const DetalheVenda = () => {
-  const [venda, setVenda] = useState({
-    cliente: '',
-    valor_compra: '',
-    valor_custo_produtos: '',
-    situacao: '',
-    forma_pagamento: '',
-    local_compra: '',
-    data_venda: ''
-  });
-  const [loading, setLoading] = useState(true);
+  const [venda, setVenda] = useState(null);
   const history = useHistory();
   const { id } = useParams();
 
-  useEffect(() => {
-    if (id) {
-      fetchVendaById(id);
-    }
-  }, [id]);
-
-  const fetchVendaById = async (id) => {
+  const fetchVenda = useCallback(async () => {
     try {
-      const data = await VendasController.fetchVendaPorId(id);
-      setVenda(data);
-      setLoading(false);
+      const vendaData = await VendasController.fetchVendaPorId(id);
+      setVenda(vendaData);
     } catch (error) {
       console.error(`Erro ao buscar venda ${id}:`, error);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    fetchVenda();
+  }, [fetchVenda]);
 
   const handleBack = () => {
     history.push('/vendas');
-    window.location.reload();
+    window.location.reload();  
   };
 
-  if (loading) {
+  if (!venda) {
     return <p>Carregando...</p>;
   }
 
@@ -51,11 +39,11 @@ const DetalheVenda = () => {
       </div>
       <div>
         <DetailLabel>Valor Compra:</DetailLabel>
-        <DetailValue>{venda.valor_compra}</DetailValue>
+        <DetailValue>{venda.valor_compra}</DetailValue> {/* Corrigido para valor_compra */}
       </div>
       <div>
         <DetailLabel>Valor Custo Produtos:</DetailLabel>
-        <DetailValue>{venda.valor_custo_produtos}</DetailValue>
+        <DetailValue>{venda.valor_custo_produtos}</DetailValue> {/* Corrigido para valor_custo_produtos */}
       </div>
       <div>
         <DetailLabel>Situação:</DetailLabel>
@@ -63,7 +51,7 @@ const DetalheVenda = () => {
       </div>
       <div>
         <DetailLabel>Forma Pagamento:</DetailLabel>
-        <DetailValue>{venda.forma_pagamento}</DetailValue>
+        <DetailValue>{venda.forma_pagamento}</DetailValue> {/* Corrigido para forma_pagamento */}
       </div>
       <div>
         <DetailLabel>Local Compra:</DetailLabel>
